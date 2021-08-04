@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -24,6 +25,15 @@ public class PlayerController : MonoBehaviour
         character.Move(moveVec * speed * Time.fixedDeltaTime);
     }
 
+    void Update()
+    {
+        if (health == 0)
+        {
+            Debug.Log("Game Over!");
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+    }
+
     public void OnMovement(InputAction.CallbackContext context)
     {
         Vector2 direction = context.ReadValue<Vector2>();
@@ -43,6 +53,10 @@ public class PlayerController : MonoBehaviour
         {
             health -= 1;
             Debug.Log($"Health: {health}");
+        }
+        if (other.gameObject.CompareTag("Goal"))
+        {
+            Debug.Log("You win!");
         }
     }
 }
